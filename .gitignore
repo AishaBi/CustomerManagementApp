@@ -1,6 +1,3 @@
-src/dbutil/DBUtil.java
-src/dbutil/Test.java
-src/dbutil/CustomerDatabase.sql
 src/mysql-connector-java-8.0.27.jar
 src/dbutil/DBUtil.java
-
+src/CustomerDatabase.sql
