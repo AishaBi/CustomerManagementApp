@@ -6,6 +6,7 @@ import java.util.List;
 
 import dao.CustomerManagementDAO;
 import pojo.Customer;
+import dbutil.DBUtil;
 
 public class CustomerManagementApplication {
 	
@@ -16,6 +17,7 @@ public class CustomerManagementApplication {
 	static CustomerManagementDAO dao = new CustomerManagementDAO();
 
 	public static void main(String[] args) throws Exception {
+				
 		
 		String option = "";
 		
@@ -39,7 +41,7 @@ public class CustomerManagementApplication {
 				addCustomer();
 				break;
 			case "2":
-				viewCustomers();
+				viewCustomers(null);
 				break;
 			case "3":
 				updateCustomer();
@@ -52,7 +54,7 @@ public class CustomerManagementApplication {
 				System.exit(0);
 				break;
 			default:
-				System.out.println("Invalid option, try again!");
+				System.out.println("Invalid option, try again!\n");
 				break;
 			}
 			
@@ -60,20 +62,88 @@ public class CustomerManagementApplication {
 		
 	}
 	
-	public static void addCustomer() {
+	public static void addCustomer() throws Exception {
+		//takes user input and stores in string: customerId, customerName, customerNo
+		System.out.println("------------------------------------------------");
+        System.out.println("Enter Customer ID:");
+        System.out.println("------------------------------------------------");
+        String customerId = br.readLine();
+        System.out.println("------------------------------------------------");
+        System.out.println("Name:");
+        System.out.println("------------------------------------------------");
+        String customerName = br.readLine();
+        System.out.println("------------------------------------------------");
+        System.out.println("No:");
+        System.out.println("------------------------------------------------");
+        int customerNo = Integer.parseInt(br.readLine());
 		
+        //store user input (strings) in a customer variable
+        Customer customer = new Customer(customerId, customerName, customerNo);
+        int status = dao.addCustomer(customer);
+        
 	}
 	
-	public static void viewCustomers() {
+	public static void viewCustomers(Customer customer) {
 		
+        System.out.println("Customer ID: "+ customer.getCustomerId());
+        System.out.println("Customer Name: "+ customer.getCustomerName());
+        System.out.println("Customer No: "+ customer.getCustomerNo());
+        System.out.println("\n");
+        
 	}
-
-	public static void updateCustomer() {
 	
-	}
 
-	public static void deleteCustomer() {
+	public static void updateCustomer() throws Exception {
+		//user enters customer id of customer to update, then can enter new name and new no
+		
+        System.out.println("------------------------------------------------");
+        System.out.println("Enter Customer Id:");
+        System.out.println("------------------------------------------------");
+        String customerId = br.readLine();
+        System.out.println("------------------------------------------------");
+        System.out.println("Enter New CustomerName:");
+        System.out.println("------------------------------------------------");
+        String customerName = br.readLine();
+        System.out.println("------------------------------------------------");
+        System.out.println("Enter New Customer Tel No:");
+        System.out.println("------------------------------------------------");
+        int customerNo = Integer.parseInt(br.readLine());
+        
+        //store user input into Customer
+        
+        Customer customer = new Customer(customerId, customerName,customerNo);
+        
+        int status = dao.updateCustomer(customer);
+        if(status ==1 )
+        {
+            System.out.println("Update successfull");
+        }
+        else
+        {
+            System.out.println("ERROR, did not update");
+        }
+        System.out.println("\n");
+
+	    }
 	
+
+	public static void deleteCustomer() throws Exception {
+		
+		System.out.println("------------------------------------------------");
+        System.out.println("Enter CustomerID:");
+        System.out.println("------------------------------------------------");
+        String customerId = br.readLine();
+        int status = dao.deleteCustomer(customerId);
+        if(status == 1 )
+        {
+            System.out.println("Customer deleted");
+        }
+        else
+        {
+            System.out.println("ERROR, did not delete2");
+        }
+        System.out.println("\n");
+		
 	}
 
 }
