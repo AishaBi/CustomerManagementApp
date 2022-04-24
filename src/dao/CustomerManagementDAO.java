@@ -5,7 +5,9 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
-
+import java.sql.DriverManager;
+import static java.sql.DriverManager.registerDriver;
+import java.sql.Driver;
 import dbutil.DBUtil;
 import pojo.Customer;
 
@@ -25,7 +27,7 @@ public class CustomerManagementDAO {
 			ResultSet rs = st.executeQuery("SELECT * FROM customer");
 			while(rs.next())
             {
-                Customer customer = new Customer(rs.getString("customer_id"), rs.getString("customer_name"), rs.getInt("customer_no"));
+                Customer customer = new Customer(rs.getString("customerId"), rs.getString("customerName"), rs.getInt("customerNo"));
                 customerList.add(customer);
             }
 			
@@ -34,7 +36,7 @@ public class CustomerManagementDAO {
 		}
 		catch(Exception e)
 		{
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         return customerList;
@@ -50,7 +52,7 @@ public class CustomerManagementDAO {
 		try
 		{
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO customer VALUES(?,?,?");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO customer VALUES(?,?,?)");
 			//parameters of query since more than 1
 			ps.setString(1, customer.getCustomerId());
 			ps.setString(2, customer.getCustomerName());
@@ -72,12 +74,16 @@ public class CustomerManagementDAO {
 		try
 		{
 		    Connection conn = DBUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement("UPDATE customer SET customer_name=?, customer_np=? WHERE customer_id=?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE customer SET customerName=?, customerNo=? WHERE customerId=?");
             //set parameters of query here but using the values for the customer object
             ps.setString(1, customer.getCustomerName());
             ps.setInt(2,  customer.getCustomerNo());
             ps.setString(3,  customer.getCustomerId());
             status = ps.executeUpdate();  //  if this statement is success, status changes to 1
+            
+            if(status != 0) {
+            	System.out.println("Database was connected and inserted");
+            }
 			
 		}catch(Exception e)
 		{
@@ -94,7 +100,7 @@ public class CustomerManagementDAO {
 	        try
 	        {
 	            Connection conn = DBUtil.getConnection();
-	            PreparedStatement ps = conn.prepareStatement("DELETE FROM customer where customer_id = ?");
+	            PreparedStatement ps = conn.prepareStatement("DELETE FROM customer where customerId = ?");
 	            ps.setString(1, customerId);
 	            status = ps.executeUpdate();  //if successful status should return 1
 
@@ -105,5 +111,6 @@ public class CustomerManagementDAO {
 	        }
 	        return status;
 	    }
+	 
 
 }

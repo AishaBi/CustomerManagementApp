@@ -1,6 +1,9 @@
 package main;
 
+
+
 import java.io.BufferedReader;
+
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class CustomerManagementApplication {
 				addCustomer();
 				break;
 			case "2":
-				viewCustomers(null);
+				viewCustomers();
 				break;
 			case "3":
 				updateCustomer();
@@ -83,11 +86,16 @@ public class CustomerManagementApplication {
         
 	}
 	
-	public static void viewCustomers(Customer customer) {
-		
-        System.out.println("Customer ID: "+ customer.getCustomerId());
-        System.out.println("Customer Name: "+ customer.getCustomerName());
-        System.out.println("Customer No: "+ customer.getCustomerNo());
+	public static void viewCustomers() {
+        
+      //get customers from dao getallCustomers() method , store in Customer type customertList
+        List<Customer> customerList = dao.getAllCustomers();
+        for(Customer customer: customerList)
+        {
+            //display product one by one
+            displayCustomer(customer);
+        }
+        System.out.println("-----------------------------------------------");
         System.out.println("\n");
         
 	}
@@ -146,4 +154,12 @@ public class CustomerManagementApplication {
 		
 	}
 
+	public static void displayCustomer(Customer customer)
+
+	{
+		System.out.println("Customer ID: "+ customer.getCustomerId());
+	    System.out.println("Customer Name: "+ customer.getCustomerName());
+	    System.out.println("Customer No: "+ customer.getCustomerNo());
+	    System.out.println("\n");
+	}
 }
